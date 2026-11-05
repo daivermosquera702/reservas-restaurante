@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Isotipo de DAIMOS">
+  <!-- Isotipo DAIMOS: teclas de marimba de chonta sobre su travesaño, y abajo el río -->
+  <rect width="64" height="64" rx="16" fill="#17483E"/>
+  <g fill="#F4EBDD">
+    <rect x="11" y="13" width="6" height="31" rx="3"/>
+    <rect x="20" y="16" width="6" height="28" rx="3"/>
+    <rect x="29" y="19" width="6" height="25" rx="3"/>
+    <rect x="38" y="22" width="6" height="22" rx="3"/>
+    <rect x="47" y="25" width="6" height="19" rx="3"/>
+  </g>
+  <rect x="8" y="33" width="48" height="3" rx="1.5" fill="#D49A43"/>
+  <path d="M11 52 q5.25 -5 10.5 0 t10.5 0 t10.5 0 t10.5 0" fill="none" stroke="#D49A43" stroke-width="3" stroke-linecap="round"/>
+</svg>

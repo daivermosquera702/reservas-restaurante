@@ -1,0 +1,557 @@
+/* =====================================================================
+   DAIMOS · Sabores del Pacífico — hoja de estilos de la aplicación
+   Se carga desde ReservasRestauranteApplication con @StyleSheet("styles.css"),
+   después del tema Lumo, así que estas reglas lo personalizan.
+
+   Contenido:
+   1. Fuentes locales          6. Plano de mesas
+   2. Variables (tokens)       7. Etiquetas de estado y distintivos
+   3. Base y tema Lumo         8. Tablas y tarjetas
+   4. Layout y marca           9. Indicadores (ocupación)
+   5. Piezas comunes          10. Diálogos, popover y avisos
+                              11. Responsive
+   ===================================================================== */
+
+/* 1. Fuentes locales (SIL Open Font License, ver carpeta fonts/) ------- */
+@font-face { font-family: "Inter"; src: url("fonts/inter-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("fonts/playfair-display-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+
+/* 2. Variables ---------------------------------------------------------- */
+html {
+  color-scheme: light;
+
+  /* Marca */
+  --daimos-manglar: #17483E;        /* color principal */
+  --daimos-manglar-700: #12392F;
+  --daimos-manglar-900: #0F332B;    /* fondo del menú lateral */
+  --daimos-manglar-tinte: #E4EEEA;
+  --daimos-oro: #D49A43;            /* acentos: nunca con texto blanco encima (2.5:1) */
+  --daimos-oro-tinte: #F6E8D2;
+  --daimos-arena: #F4EBDD;          /* fondo general */
+  --daimos-arena-50: #FBF7F0;
+  --daimos-ebano: #26332E;          /* texto principal */
+  --daimos-texto-secundario: #56635E;
+  --daimos-blanco: #FFFFFF;
+  --daimos-linea: rgba(38, 51, 46, 0.12);
+  --daimos-linea-fuerte: rgba(38, 51, 46, 0.22);
+
+  /* Disponibilidad de mesas (plano) */
+  --mesa-libre: #287C66;           /* verde agua */
+  --mesa-libre-fondo: #E2F0EA;
+  --mesa-libre-texto: #1F6552;     /* 5.9:1 sobre su fondo */
+  --mesa-reservada: #B84C3B;       /* terracota, texto blanco 5.1:1 */
+  --mesa-reservada-texto: #FFFFFF;
+
+  /* Estados de reserva (etiquetas: fondo suave + texto oscuro) */
+  --estado-pendiente: #C58A28;
+  --estado-pendiente-fondo: #F8EBD3;
+  --estado-pendiente-texto: #7A5414;
+  --estado-confirmada: #287C66;
+  --estado-confirmada-fondo: #E2F0EA;
+  --estado-confirmada-texto: #1F6552;
+  --estado-cancelada: #B84C3B;
+  --estado-cancelada-fondo: #F6E2DD;
+  --estado-cancelada-texto: #943A2C;
+  --estado-neutral: #64748B;
+  --estado-neutral-fondo: #EDF0F4;
+  --estado-neutral-texto: #475569;
+
+  /* Acción destructiva (eliminar): ladrillo más oscuro que la terracota */
+  --daimos-peligro: #9E3A2C;
+
+  /* Tipografía */
+  --daimos-fuente-titulos: "Playfair Display", Georgia, "Times New Roman", serif;
+  --daimos-fuente-texto: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Radios, sombras, espacios, transiciones */
+  --daimos-radio-s: 8px;
+  --daimos-radio-m: 12px;
+  --daimos-radio-l: 18px;
+  --daimos-radio-pastilla: 999px;
+  --daimos-sombra-1: 0 1px 2px rgba(23, 46, 40, 0.06), 0 1px 1px rgba(23, 46, 40, 0.04);
+  --daimos-sombra-2: 0 6px 18px rgba(23, 46, 40, 0.08), 0 2px 4px rgba(23, 46, 40, 0.05);
+  --daimos-espacio-1: 4px;
+  --daimos-espacio-2: 8px;
+  --daimos-espacio-3: 12px;
+  --daimos-espacio-4: 16px;
+  --daimos-espacio-5: 24px;
+  --daimos-espacio-6: 32px;
+  --daimos-transicion: 160ms ease;
+  --daimos-tactil: 44px;            /* tamaño táctil mínimo */
+  --mesa-min: 46px;
+  --mesa-max: 96px;
+
+  /* 3. Tema Lumo con los colores de DAIMOS */
+  --lumo-font-family: var(--daimos-fuente-texto);
+  --lumo-primary-color: var(--daimos-manglar);
+  --lumo-primary-color-50pct: rgba(23, 72, 62, 0.5);
+  --lumo-primary-color-10pct: rgba(23, 72, 62, 0.1);
+  --lumo-primary-text-color: var(--daimos-manglar);
+  --lumo-primary-contrast-color: #FFFFFF;
+  --lumo-success-color: var(--estado-confirmada);
+  --lumo-success-text-color: var(--estado-confirmada-texto);
+  --lumo-success-contrast-color: #FFFFFF;
+  --lumo-error-color: var(--daimos-peligro);
+  --lumo-error-text-color: var(--daimos-peligro);
+  --lumo-error-contrast-color: #FFFFFF;
+  --lumo-header-text-color: var(--daimos-ebano);
+  --lumo-body-text-color: var(--daimos-ebano);
+  --lumo-secondary-text-color: var(--daimos-texto-secundario);
+  --lumo-tertiary-text-color: #6B7772;
+  --lumo-border-radius-s: 6px;
+  --lumo-border-radius-m: 10px;
+  --lumo-border-radius-l: 16px;
+}
+
+/* 3. Base ---------------------------------------------------------------- */
+html, body {
+  font-family: var(--daimos-fuente-texto);
+  color: var(--daimos-ebano);
+  background: var(--daimos-arena);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: lining-nums; /* números alineados también en Playfair Display */
+}
+
+h1, h2, h3 { font-family: var(--daimos-fuente-titulos); color: var(--daimos-ebano); letter-spacing: -0.01em; }
+
+/* Campos: fondo blanco con borde fino en lugar del gris de Lumo */
+vaadin-text-field::part(input-field),
+vaadin-integer-field::part(input-field),
+vaadin-date-picker::part(input-field),
+vaadin-time-picker::part(input-field),
+vaadin-combo-box::part(input-field),
+vaadin-select::part(input-field) {
+  background: var(--daimos-blanco);
+  border: 1px solid var(--daimos-linea-fuerte);
+  border-radius: var(--daimos-radio-s);
+  transition: border-color var(--daimos-transicion), box-shadow var(--daimos-transicion);
+}
+vaadin-text-field:hover::part(input-field),
+vaadin-integer-field:hover::part(input-field),
+vaadin-date-picker:hover::part(input-field),
+vaadin-time-picker:hover::part(input-field),
+vaadin-combo-box:hover::part(input-field),
+vaadin-select:hover::part(input-field) {
+  border-color: var(--daimos-manglar);
+}
+vaadin-text-field[focused]::part(input-field),
+vaadin-integer-field[focused]::part(input-field),
+vaadin-date-picker[focused]::part(input-field),
+vaadin-time-picker[focused]::part(input-field),
+vaadin-combo-box[focused]::part(input-field),
+vaadin-select[focused]::part(input-field) {
+  border-color: var(--daimos-manglar);
+  box-shadow: 0 0 0 3px rgba(212, 154, 67, 0.35);
+}
+
+/* Botones: misma forma en toda la app, con estados claros */
+vaadin-button {
+  font-weight: 600;
+  border-radius: var(--daimos-radio-s);
+  transition: background-color var(--daimos-transicion), box-shadow var(--daimos-transicion), transform var(--daimos-transicion);
+}
+vaadin-button:not([theme~="tertiary"]):not([theme~="primary"]):not(.mesa) {
+  background: var(--daimos-blanco);
+  border: 1px solid var(--daimos-linea-fuerte);
+  color: var(--daimos-manglar);
+}
+vaadin-button:not([theme~="tertiary"]):not([theme~="primary"]):not(.mesa):hover { border-color: var(--daimos-manglar); background: var(--daimos-manglar-tinte); }
+vaadin-button[theme~="primary"]:hover:not([disabled]) { background: var(--daimos-manglar-700); }
+vaadin-button[theme~="primary"][theme~="success"]:hover:not([disabled]) { background: #1F6552; }
+vaadin-button:active:not([disabled]) { transform: translateY(1px); }
+vaadin-button[focus-ring] { box-shadow: 0 0 0 3px rgba(212, 154, 67, 0.55); }
+vaadin-button[disabled] { opacity: 0.45; }
+vaadin-button[theme~="tertiary"] { color: var(--daimos-manglar); }
+vaadin-button[theme~="tertiary"]:hover:not([disabled]) { background: var(--daimos-manglar-tinte); }
+vaadin-button[theme~="tertiary"][theme~="error"] { color: var(--daimos-peligro); }
+vaadin-button[theme~="tertiary"][theme~="error"]:hover:not([disabled]) { background: var(--estado-cancelada-fondo); }
+
+/* 4. Layout y marca ------------------------------------------------------ */
+vaadin-app-layout::part(navbar) {
+  background: var(--daimos-arena-50);
+  border-bottom: 1px solid var(--daimos-linea);
+  min-height: 60px;
+  padding-inline: var(--daimos-espacio-2) var(--daimos-espacio-4);
+  gap: var(--daimos-espacio-2);
+  box-shadow: none;
+}
+vaadin-app-layout::part(drawer) {
+  background: var(--daimos-manglar-900);
+  border-inline-end: none;
+  width: 272px;
+}
+vaadin-app-layout { --vaadin-app-layout-drawer-width: 272px; background: var(--daimos-arena); }
+
+vaadin-drawer-toggle { color: var(--daimos-manglar); width: var(--daimos-tactil); height: var(--daimos-tactil); }
+
+.marca { display: flex; align-items: center; gap: var(--daimos-espacio-3); text-decoration: none; min-width: 0; }
+.marca-isotipo { width: 44px; height: 44px; flex: none; border-radius: 12px; }
+.marca-texto { display: flex; flex-direction: column; line-height: 1.1; min-width: 0; }
+.marca-nombre { font-family: var(--daimos-fuente-titulos); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.06em; }
+.marca-lema { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px; white-space: nowrap; }
+
+.marca-daimos { color: var(--daimos-arena); padding: var(--daimos-espacio-5) var(--daimos-espacio-5) var(--daimos-espacio-4); }
+.marca-daimos .marca-lema { color: var(--daimos-oro); }
+
+.marca-navbar { display: none; color: var(--daimos-manglar); }
+.marca-navbar .marca-isotipo { width: 34px; height: 34px; border-radius: 9px; }
+.marca-navbar .marca-nombre { font-size: 1.25rem; }
+vaadin-app-layout[overlay] .marca-navbar { display: flex; }
+
+.navbar-fecha {
+  margin-inline-start: auto;
+  display: inline-flex; align-items: center; gap: var(--daimos-espacio-2);
+  color: var(--daimos-texto-secundario); font-size: 0.875rem; font-weight: 500;
+  white-space: nowrap;
+}
+.navbar-fecha vaadin-icon { color: var(--daimos-manglar); width: 16px; height: 16px; }
+
+/* Franja inspirada en los tejidos del Pacífico: triángulos oro y verde agua */
+.franja-pacifico {
+  height: 8px; flex: none;
+  background:
+    linear-gradient(135deg, var(--daimos-oro) 25%, transparent 25%) -6px 0 / 12px 8px,
+    linear-gradient(225deg, var(--daimos-oro) 25%, transparent 25%) -6px 0 / 12px 8px,
+    linear-gradient(315deg, var(--mesa-libre) 25%, transparent 25%) 0 0 / 12px 8px,
+    linear-gradient(45deg, var(--mesa-libre) 25%, transparent 25%) 0 0 / 12px 8px;
+  opacity: 0.9;
+}
+
+.menu-cabecera { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(244, 235, 221, 0.6); padding: var(--daimos-espacio-4) var(--daimos-espacio-5) var(--daimos-espacio-2); }
+.menu-daimos { padding-inline: var(--daimos-espacio-3); }
+.menu-daimos vaadin-side-nav-item::part(content) {
+  min-height: var(--daimos-tactil);
+  border-radius: var(--daimos-radio-s);
+  color: rgba(244, 235, 221, 0.86);
+  font-weight: 500;
+  padding-inline: var(--daimos-espacio-3);
+  transition: background-color var(--daimos-transicion), color var(--daimos-transicion);
+}
+.menu-daimos vaadin-side-nav-item::part(content):hover { background: rgba(244, 235, 221, 0.08); color: #FFFFFF; }
+.menu-daimos vaadin-side-nav-item[current]::part(content) {
+  background: rgba(212, 154, 67, 0.16);
+  color: #FFFFFF;
+  box-shadow: inset 3px 0 0 var(--daimos-oro);
+}
+.menu-daimos vaadin-side-nav-item vaadin-icon { color: rgba(244, 235, 221, 0.7); width: 18px; height: 18px; }
+.menu-daimos vaadin-side-nav-item[current] vaadin-icon { color: var(--daimos-oro); }
+
+.drawer-contenido { display: flex; flex-direction: column; min-height: 100%; }
+.drawer-pie { margin-top: auto; padding: var(--daimos-espacio-5); color: rgba(244, 235, 221, 0.62); font-size: 0.8125rem; line-height: 1.45; display: flex; flex-direction: column; gap: var(--daimos-espacio-3); }
+.drawer-pie-titulo { display: block; color: var(--daimos-arena); font-weight: 600; }
+
+/* 5. Piezas comunes ------------------------------------------------------ */
+.vista {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--daimos-espacio-6) var(--daimos-espacio-6) 48px;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; gap: var(--daimos-espacio-5);
+  min-width: 0;
+}
+
+.section-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--daimos-espacio-4); }
+.section-textos { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 320px; }
+.section-kicker { display: inline-flex; align-items: center; gap: 10px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--daimos-manglar); }
+.section-kicker::before { content: ""; width: 22px; height: 3px; border-radius: 2px; background: var(--daimos-oro); }
+.section-titulo { margin: 0; font-size: 2.25rem; line-height: 1.15; font-weight: 700; }
+.section-sub { margin: 0; color: var(--daimos-texto-secundario); font-size: 0.975rem; line-height: 1.5; max-width: 62ch; }
+.section-acciones { display: flex; gap: var(--daimos-espacio-2); flex-wrap: wrap; }
+
+.panel {
+  background: var(--daimos-blanco);
+  border: 1px solid var(--daimos-linea);
+  border-radius: var(--daimos-radio-l);
+  box-shadow: var(--daimos-sombra-1);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--daimos-espacio-3) var(--daimos-espacio-4); padding: var(--daimos-espacio-4) var(--daimos-espacio-5); }
+.toolbar > vaadin-text-field, .toolbar > vaadin-date-picker, .toolbar > vaadin-time-picker, .toolbar > vaadin-select { flex: 1 1 200px; min-width: 0; max-width: 320px; }
+.toolbar > .campo-busqueda { flex: 2 1 260px; max-width: 420px; }
+.toolbar-info { margin-inline-start: auto; color: var(--daimos-texto-secundario); font-size: 0.875rem; align-self: center; }
+
+.contador { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--daimos-radio-pastilla); background: var(--daimos-manglar-tinte); color: var(--daimos-manglar); font-size: 0.8125rem; font-weight: 600; white-space: nowrap; }
+
+.vacio { padding: var(--daimos-espacio-6) var(--daimos-espacio-4); text-align: center; color: var(--daimos-texto-secundario); display: flex; flex-direction: column; align-items: center; gap: var(--daimos-espacio-2); }
+.vacio vaadin-icon { color: var(--daimos-oro); width: 28px; height: 28px; }
+
+.texto-secundario { color: var(--daimos-texto-secundario); font-size: 0.8125rem; }
+.icono-pequeno { width: 14px; height: 14px; flex: none; }
+
+/* 6. Plano de mesas ------------------------------------------------------ */
+.plano-filtros { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--daimos-espacio-3) var(--daimos-espacio-4); padding: var(--daimos-espacio-4) var(--daimos-espacio-5); }
+.plano-filtros > vaadin-date-picker, .plano-filtros > vaadin-time-picker { flex: 1 1 180px; max-width: 240px; min-width: 0; }
+.plano-resumen { display: flex; flex-wrap: wrap; gap: var(--daimos-espacio-2); margin-inline-start: auto; align-self: center; }
+
+.leyenda { display: flex; flex-wrap: wrap; gap: var(--daimos-espacio-2) var(--daimos-espacio-4); align-items: center; font-size: 0.8125rem; color: var(--daimos-texto-secundario); }
+.leyenda-item { display: inline-flex; align-items: center; gap: 8px; }
+.leyenda-muestra { width: 22px; height: 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+.leyenda-muestra vaadin-icon { width: 12px; height: 12px; }
+
+.plano-zonas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: var(--daimos-espacio-5); }
+
+.zona { padding: var(--daimos-espacio-4) var(--daimos-espacio-5) var(--daimos-espacio-5); position: relative; overflow: hidden; }
+.zona::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--daimos-manglar); }
+.zona-terraza::before { background: var(--daimos-oro); }
+.zona-terraza { background: linear-gradient(180deg, rgba(246, 232, 210, 0.45), rgba(255, 255, 255, 0) 120px), var(--daimos-blanco); }
+.zona-cabecera { display: flex; align-items: center; gap: var(--daimos-espacio-3); margin-bottom: var(--daimos-espacio-4); flex-wrap: wrap; }
+.zona-icono { width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: var(--daimos-manglar-tinte); color: var(--daimos-manglar); flex: none; }
+.zona-terraza .zona-icono { background: var(--daimos-oro-tinte); color: #7A5414; }
+.zona-icono vaadin-icon { width: 18px; height: 18px; }
+.zona-nombre { font-family: var(--daimos-fuente-titulos); font-size: 1.25rem; font-weight: 700; margin: 0; }
+.zona-detalle { color: var(--daimos-texto-secundario); font-size: 0.8125rem; }
+.zona-conteo { margin-inline-start: auto; display: flex; gap: 6px; }
+
+/* La cuadrícula solo se desplaza dentro de sí misma si no cabe */
+.plano-cuadricula-scroll { overflow-x: auto; overscroll-behavior-x: contain; padding-bottom: 4px; margin-inline: -4px; padding-inline: 4px; }
+.plano-cuadricula {
+  display: grid;
+  grid-template-columns: repeat(var(--columnas, 5), minmax(var(--mesa-min), var(--mesa-max)));
+  gap: var(--daimos-espacio-3);
+  justify-content: center;
+  padding: var(--daimos-espacio-2) 0;
+}
+
+vaadin-button.mesa {
+  grid-row: var(--fila);
+  grid-column: var(--col);
+  width: 100%;
+  height: auto;
+  min-width: var(--mesa-min);
+  min-height: var(--mesa-min);
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  border-radius: 14px;
+  box-sizing: border-box;
+  font-family: var(--daimos-fuente-texto);
+  box-shadow: var(--daimos-sombra-1);
+  transition: transform var(--daimos-transicion), box-shadow var(--daimos-transicion), background-color var(--daimos-transicion);
+}
+vaadin-button.mesa::part(label) { width: 100%; height: 100%; overflow: visible; white-space: normal; display: flex; padding: 0; }
+vaadin-button.mesa:hover { transform: translateY(-2px); box-shadow: var(--daimos-sombra-2); }
+vaadin-button.mesa[focus-ring] { box-shadow: 0 0 0 3px var(--daimos-blanco), 0 0 0 6px var(--daimos-oro); }
+
+.mesa-libre { background: var(--mesa-libre-fondo); color: var(--mesa-libre-texto); border: 2px solid var(--mesa-libre); }
+vaadin-button.mesa-libre:hover { background: #D3E9E0; }
+.mesa-reservada {
+  color: var(--mesa-reservada-texto);
+  border: 2px solid var(--mesa-reservada);
+  /* rayado diagonal: distingue la mesa reservada sin depender solo del color */
+  background: repeating-linear-gradient(135deg, var(--mesa-reservada) 0 9px, #AE4535 9px 13px);
+}
+
+.mesa-contenido { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.1; }
+.mesa-numero { font-family: var(--daimos-fuente-titulos); font-weight: 700; font-size: 1.6rem; font-variant-numeric: lining-nums; }
+.mesa-capacidad { display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 600; opacity: 0.95; }
+.mesa-estado { display: inline-flex; align-items: center; gap: 3px; font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; margin-top: 2px; max-width: 100%; white-space: nowrap; }
+.mesa-contenido vaadin-icon { width: 12px; height: 12px; }
+
+/* 7. Etiquetas de estado y distintivos ----------------------------------- */
+.estado {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: var(--daimos-radio-pastilla);
+  font-size: 0.8125rem; font-weight: 600; line-height: 1.4; white-space: nowrap;
+  border: 1px solid transparent;
+}
+.estado vaadin-icon { width: 13px; height: 13px; }
+.estado-pendiente { background: var(--estado-pendiente-fondo); color: var(--estado-pendiente-texto); border-color: rgba(197, 138, 40, 0.35); }
+.estado-pendiente vaadin-icon { color: var(--estado-pendiente); }
+.estado-confirmada { background: var(--estado-confirmada-fondo); color: var(--estado-confirmada-texto); border-color: rgba(40, 124, 102, 0.3); }
+.estado-cancelada { background: var(--estado-cancelada-fondo); color: var(--estado-cancelada-texto); border-color: rgba(184, 76, 59, 0.28); text-decoration: line-through; text-decoration-thickness: 1px; }
+.estado-neutral { background: var(--estado-neutral-fondo); color: var(--estado-neutral-texto); }
+
+/* Resumen del plano: usa los colores de disponibilidad, no los de estado */
+.resumen-libres { background: var(--mesa-libre-fondo); color: var(--mesa-libre-texto); border-color: var(--mesa-libre); }
+.resumen-reservadas { background: var(--mesa-reservada); color: var(--mesa-reservada-texto); border-color: var(--mesa-reservada); }
+
+.distintivo-frecuente {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--daimos-radio-pastilla);
+  background: var(--daimos-oro); color: var(--daimos-ebano); /* ébano sobre oro: 5.3:1 */
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+}
+.distintivo-frecuente vaadin-icon { width: 11px; height: 11px; }
+
+.zona-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 8px; border-radius: var(--daimos-radio-pastilla); font-size: 0.8125rem; font-weight: 600; white-space: nowrap; }
+.zona-badge vaadin-icon { width: 13px; height: 13px; }
+.zona-salon { background: var(--daimos-manglar-tinte); color: var(--daimos-manglar); }
+.zona-terraza-badge { background: var(--daimos-oro-tinte); color: #6E4A10; }
+
+.numero-mesa {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 10px; flex: none;
+  background: var(--daimos-manglar); color: var(--daimos-arena);
+  font-family: var(--daimos-fuente-titulos); font-weight: 700; font-size: 1rem;
+  font-variant-numeric: lining-nums;
+}
+
+/* Mini plano: posición de la mesa dentro del restaurante */
+.mini-plano { display: inline-grid; grid-template-columns: repeat(var(--columnas, 5), 8px); gap: 2px; padding: 4px; border-radius: 6px; background: var(--daimos-arena-50); border: 1px solid var(--daimos-linea); vertical-align: middle; }
+.mini-celda { width: 8px; height: 8px; border-radius: 2px; background: rgba(38, 51, 46, 0.09); }
+.mini-celda.ocupada { background: rgba(38, 51, 46, 0.26); }
+.mini-celda.actual { background: var(--daimos-oro); box-shadow: 0 0 0 1px var(--daimos-manglar); }
+.posicion { display: inline-flex; align-items: center; gap: 10px; }
+
+/* 8. Tablas y tarjetas --------------------------------------------------- */
+.tabla-panel { overflow: hidden; }
+vaadin-grid.tabla-daimos {
+  border: none;
+  font-family: var(--daimos-fuente-texto);
+  font-size: 0.9rem;
+  --lumo-size-m: 3.5rem;
+}
+vaadin-grid.tabla-daimos::part(header-cell) {
+  background: var(--daimos-arena-50);
+  color: var(--daimos-texto-secundario);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  min-height: 44px;
+}
+vaadin-grid.tabla-daimos::part(body-cell) { border-top-color: var(--daimos-linea); }
+vaadin-grid.tabla-daimos::part(row):hover { background: transparent; }
+
+.celda-principal { display: flex; flex-direction: column; gap: 2px; min-width: 0; line-height: 1.3; }
+.celda-titulo { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.celda-fecha { font-weight: 600; text-transform: capitalize; }
+.celda-hora { font-variant-numeric: tabular-nums; }
+.celda-icono { display: inline-flex; align-items: center; gap: 6px; }
+.celda-icono vaadin-icon { color: var(--daimos-texto-secundario); width: 14px; height: 14px; }
+.acciones-fila { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; }
+.acciones-fila vaadin-button { margin: 0; }
+.hueco-accion { display: inline-block; width: 96px; }
+
+/* Lista de tarjetas (versión móvil de las tablas) */
+.tarjeta-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: var(--daimos-espacio-3); align-items: start; }
+.tarjeta-registro { padding: var(--daimos-espacio-4); display: flex; flex-direction: column; gap: var(--daimos-espacio-3); }
+.tarjeta-cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--daimos-espacio-3); }
+.tarjeta-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--daimos-texto-secundario); font-size: 0.875rem; }
+.tarjeta-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.tarjeta-meta vaadin-icon { width: 14px; height: 14px; color: var(--daimos-manglar); }
+.mobile-actions { display: flex; gap: var(--daimos-espacio-2); align-items: center; flex-wrap: wrap; border-top: 1px solid var(--daimos-linea); padding-top: var(--daimos-espacio-3); }
+.mobile-actions vaadin-button { min-height: var(--daimos-tactil); margin: 0; }
+.mobile-actions .accion-crece { flex: 1 1 auto; }
+.mobile-actions vaadin-menu-bar { flex: none; }
+.mobile-actions vaadin-menu-bar::part(container) { gap: 0; }
+.mobile-actions vaadin-menu-bar-button { min-height: var(--daimos-tactil); min-width: var(--daimos-tactil); margin: 0; border-radius: var(--daimos-radio-s); border: 1px solid var(--daimos-linea-fuerte); color: var(--daimos-manglar); background: var(--daimos-blanco); }
+
+/* Mostrar tabla o tarjetas según el ancho.
+   solo-escritorio / solo-movil: cambia a 768 px.
+   solo-escritorio-amplio / solo-movil-amplio: cambia a 1366 px (tablas con muchas columnas). */
+.solo-movil, .solo-movil-amplio { display: none !important; }
+@media (max-width: 1365px) {
+  .solo-escritorio-amplio { display: none !important; }
+  .solo-movil-amplio { display: grid !important; }
+}
+
+/* 9. Indicadores --------------------------------------------------------- */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--daimos-espacio-4); }
+.dashboard-card { padding: var(--daimos-espacio-5); display: flex; flex-direction: column; gap: var(--daimos-espacio-2); position: relative; overflow: hidden; }
+.dashboard-card::after { content: ""; position: absolute; right: -18px; bottom: -18px; width: 70px; height: 70px; border-radius: 50%; background: var(--daimos-arena); opacity: 0.55; }
+.kpi-cabecera { display: flex; align-items: center; justify-content: space-between; gap: var(--daimos-espacio-2); }
+.kpi-etiqueta { font-size: 0.8125rem; font-weight: 600; color: var(--daimos-texto-secundario); }
+.kpi-icono { width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: var(--daimos-manglar-tinte); color: var(--daimos-manglar); flex: none; }
+.kpi-icono vaadin-icon { width: 18px; height: 18px; }
+.kpi-oro .kpi-icono { background: var(--daimos-oro-tinte); color: #7A5414; }
+.kpi-agua .kpi-icono { background: var(--mesa-libre-fondo); color: var(--mesa-libre-texto); }
+.kpi-terracota .kpi-icono { background: var(--estado-cancelada-fondo); color: var(--estado-cancelada-texto); }
+.kpi-valor { font-family: var(--daimos-fuente-titulos); font-size: 2.5rem; font-weight: 700; line-height: 1; color: var(--daimos-ebano); font-variant-numeric: lining-nums; position: relative; z-index: 1; }
+.kpi-detalle { font-size: 0.8125rem; color: var(--daimos-texto-secundario); position: relative; z-index: 1; }
+
+/* 10. Diálogos, popover y avisos ----------------------------------------- */
+vaadin-dialog::part(overlay), vaadin-dialog-overlay::part(overlay),
+vaadin-confirm-dialog::part(overlay), vaadin-confirm-dialog-overlay::part(overlay) {
+  border-radius: var(--daimos-radio-l);
+  box-shadow: 0 24px 60px rgba(15, 51, 43, 0.25);
+}
+vaadin-dialog::part(title), vaadin-dialog-overlay::part(title),
+vaadin-confirm-dialog::part(header), vaadin-confirm-dialog-overlay::part(header) {
+  font-family: var(--daimos-fuente-titulos);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--daimos-ebano);
+}
+vaadin-dialog::part(header), vaadin-dialog-overlay::part(header) { border-bottom: 1px solid var(--daimos-linea); }
+vaadin-dialog::part(footer), vaadin-dialog-overlay::part(footer) { background: var(--daimos-arena-50); border-top: 1px solid var(--daimos-linea); }
+.formulario-daimos { max-width: 640px; }
+.dialogo-intro { margin: 0 0 var(--daimos-espacio-3); color: var(--daimos-texto-secundario); font-size: 0.875rem; }
+
+.popover-mesa { display: flex; flex-direction: column; gap: var(--daimos-espacio-3); min-width: 220px; max-width: min(320px, 86vw); }
+.popover-cabecera { display: flex; align-items: center; gap: var(--daimos-espacio-3); }
+.popover-titulo { font-family: var(--daimos-fuente-titulos); font-weight: 700; font-size: 1.125rem; }
+.popover-lista { display: flex; flex-direction: column; gap: var(--daimos-espacio-2); border-top: 1px solid var(--daimos-linea); padding-top: var(--daimos-espacio-3); }
+.popover-item { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: center; font-size: 0.875rem; }
+.popover-item.es-ahora { background: var(--daimos-oro-tinte); border-radius: 8px; padding: 6px 8px; margin-inline: -8px; }
+.popover-hora { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--daimos-manglar); }
+.popover-cliente { font-weight: 600; }
+.popover-detalle { grid-column: 2; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--daimos-texto-secundario); font-size: 0.8125rem; }
+
+vaadin-notification-card[theme~="success"] { --lumo-success-color: var(--daimos-manglar); }
+vaadin-notification-card[theme~="error"] { --lumo-error-color: var(--daimos-peligro); }
+
+/* 11. Responsive --------------------------------------------------------- */
+@media (max-width: 1400px) {
+  .vista { padding-inline: var(--daimos-espacio-5); }
+}
+
+@media (max-width: 1024px) {
+  .vista { padding: var(--daimos-espacio-5) var(--daimos-espacio-5) 40px; }
+  .section-titulo { font-size: 2rem; }
+}
+
+@media (max-width: 767px) {
+  html { --lumo-size-m: 2.75rem; --mesa-max: 80px; } /* campos y botones de 44 px para el dedo */
+  .solo-escritorio { display: none !important; }
+  .solo-movil { display: grid !important; }
+
+  vaadin-app-layout::part(navbar) { min-height: 56px; padding-inline: 4px var(--daimos-espacio-3); }
+  .navbar-fecha { display: none; }
+
+  .vista { padding: var(--daimos-espacio-4) var(--daimos-espacio-4) 32px; gap: var(--daimos-espacio-4); }
+  .section-titulo { font-size: 1.625rem; }
+  .section-sub { font-size: 0.9rem; }
+  .section-acciones, .section-acciones vaadin-button { width: 100%; }
+
+  .toolbar, .plano-filtros { padding: var(--daimos-espacio-3) var(--daimos-espacio-4); }
+  .toolbar > vaadin-text-field, .toolbar > vaadin-date-picker, .toolbar > vaadin-time-picker, .toolbar > vaadin-select,
+  .toolbar > .campo-busqueda, .plano-filtros > vaadin-date-picker, .plano-filtros > vaadin-time-picker { flex: 1 1 100%; max-width: none; }
+  .plano-resumen, .toolbar-info { margin-inline-start: 0; }
+
+  .zona { padding: var(--daimos-espacio-3) var(--daimos-espacio-3) var(--daimos-espacio-4); }
+  .plano-cuadricula { gap: 8px; }
+  .zona-conteo { margin-inline-start: 0; width: 100%; }
+
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--daimos-espacio-3); }
+  .dashboard-card { padding: var(--daimos-espacio-4); }
+  .kpi-valor { font-size: 2rem; }
+
+  vaadin-button[theme~="icon"] { min-width: var(--daimos-tactil); min-height: var(--daimos-tactil); }
+}
+
+/* Mesas pequeñas: se conserva el número, la capacidad y el ícono de estado */
+@media (max-width: 480px) {
+  .mesa-estado-texto { display: none; }
+  .mesa-numero { font-size: 1.2rem; }
+  .mesa-capacidad { font-size: 0.6875rem; }
+  .marca-daimos { padding: var(--daimos-espacio-4) var(--daimos-espacio-4) var(--daimos-espacio-3); }
+}
+
+@media (max-width: 360px) {
+  .kpis { grid-template-columns: minmax(0, 1fr); }
+  .marca-navbar .marca-nombre { font-size: 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  vaadin-button.mesa:hover { transform: none; }
+}
