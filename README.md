@@ -2,7 +2,7 @@
 
 Aplicación web en **Vaadin 25** para DAIMOS, un restaurante inspirado en la gastronomía y la cultura del Pacífico colombiano (Chocó). Antes, el restaurante tomaba las reservas por teléfono y las anotaba en un plano de papel. La aplicación permite ver de un vistazo qué mesas están libres para una fecha y una hora.
 
-- **Autor:** _(tu nombre)_
+- **Autor:** Daiver Mosquera_
 - **Curso:** Lógica de Programación 12-2 — 2026-2
 - **Fecha:** 11 de noviembre de 2026
 
